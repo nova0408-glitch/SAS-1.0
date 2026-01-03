@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SAS 1.0</title>
+    <link rel="stylesheet" href="style1.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome, Admin</h1>
+
+        <div class="dashboard-cards">
+            <div class="holo-card">
+                <h3>Total Staff</h3>
+                <p id="total-staff">Loading...</p>
+            </div>
+            <div class="holo-card">
+                <h3>Today’s Attendance</h3>
+                <p id="today-attendance">Loading...</p>
+            </div>
+            <div class="holo-card">
+                <h3>Staff Management</h3>
+                <p><a href="staff_management.html" class="holo-btn">Go</a></p>
+            </div>
+        </div>
+
+        <button onclick="logout()" class="holo-btn">Logout</button>
+    </div>
+
+    <script>
+        < script >
+            function logout() {
+                window.location.href = '../backend/logout.php';
+            }
+
+        // Load live data
+        function loadDashboard() {
+            fetch('../backend/get_dashboard_data.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        window.location.href = 'index.html';
+                    } else {
+                        document.getElementById('total-staff').textContent = data.totalStaff;
+                        document.getElementById('today-attendance').textContent = data.todayAttendance;
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+
+        window.onload = loadDashboard;
+    </script>
+    </script>
+</body>
+
+</html>

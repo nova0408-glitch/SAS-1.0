@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - SAS 1.0</title>
+    <link rel="stylesheet" href="style3.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome, <span id="staffName">Staff</span></h1>
+
+        <div class="dashboard-cards">
+            <div class="holo-card">
+                <h3>Sign In / Sign Out</h3>
+                <button onclick="signIn()" class="holo-btn">Sign In</button><br>
+                <br>
+                <br>
+                <button onclick="signOut()" class="holo-btn">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPopup(message, type = "info") {
+            // Remove existing popup if any
+            let existing = document.querySelector('.popup');
+            if (existing) existing.remove();
+
+            // Create popup
+            const popup = document.createElement('div');
+            popup.className = 'popup ' + type;
+            popup.textContent = message;
+            document.body.appendChild(popup);
+
+            // Animate and remove after 3s
+            setTimeout(() => popup.remove(), 3000);
+        }
+
+        // Sign In / Sign Out functions
+        function signIn() {
+            fetch('../backend/record_attendance.php?action=sign_in')
+                .then(res => res.json())
+                .then(data => showPopup(data.message, data.status))
+                .catch(err => console.error(err));
+        }
+
+        function signOut() {
+            fetch('../backend/record_attendance.php?action=sign_out')
+                .then(res => res.json())
+                .then(data => showPopup(data.message, data.status))
+                .catch(err => console.error(err));
+        }
+    </script>
+</body>
+
+</html>
