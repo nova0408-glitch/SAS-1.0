@@ -1,0 +1,48 @@
+name: Basic CI for SAS 1.0
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'  # Change if your project uses a different version
+          extensions: mbstring, intl, pdo_mysql  # Common for PHP apps
+
+      - name: Check PHP syntax
+        run: find . -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
+
+      - name: Set up Node.js (for ESLint)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'  # Or 'yarn' if you use Yarn
+
+      - name: Install ESLint and dependencies
+        run: |
+          npm install eslint --save-dev
+          npx eslint --init  # This will fail if no config – we'll fix below
+
+      - name: Lint JavaScript
+        run: npx eslint . --ext .js  # Adjust if you have .vue, .jsx etc.
+
+      - name: Lint HTML (basic validation)
+        run: npx htmlhint **/*.html
+
+      - name: Install HTMLHint and CSS linter
+        run: |
+          npm install htmlhint stylelint stylelint-config-standard --save-dev
+
+      - name: Lint CSS
+        run: npx stylelint "**/*.css"
