@@ -1,9 +1,10 @@
 <?php
 session_start();
 require_once '../config/db.php';
+require_once '../config/constants.php';
 
 // Only logged-in staff
-if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 2) {
+if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_STAFF) {
     echo json_encode(["status"=>"error","message"=>"Access denied. Please login first."]);
     exit();
 }

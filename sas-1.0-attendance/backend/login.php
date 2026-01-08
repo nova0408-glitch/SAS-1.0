@@ -1,12 +1,24 @@
 <?php
+/**
+ * Admin Login Handler
+ * Handles POST requests for admin authentication.
+ * Validates input, checks credentials, and sets session on success.
+ */
+
 // Start session
 session_start();
 
-// Include database connection
+// Include dependencies
 require_once '../config/db.php';
+require_once '../config/constants.php';
+require_once '../config/csrf.php';
 
 // Check if form submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validate CSRF token
+    if (!isset($_POST['csrf_token']) || !validateCsrfToken($_POST['csrf_token'])) {
+        die('Invalid CSRF token.');
+    }
 
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
@@ -14,6 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Basic validation
     if (empty($email) || empty($password)) {
         die('Email and password are required.');
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die('Invalid email format.');
     }
 
     // Prepare SQL to prevent SQL injection
@@ -35,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (password_verify($password, $password_hash)) {
 
             // Check if admin
-            if ($role_id != 1) { // 1 = ADMIN
+            if ($role_id != ROLE_ADMIN) { // ROLE_ADMIN
                 die("Access denied. Only admins can login here.");
             }
 
@@ -45,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['role_id'] = $role_id;
 
             // Redirect to admin dashboard
-            header("Location: ../frontend/admin_dashboard.html");
+            header("Location: ../frontend/admin_dashboard.php");
             exit();
 
         } else {

@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+session_start();
+require_once '../config/constants.php';
+if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
+    header("Location: index.html");
+    exit();
+}
+?>
 
 <head>
     <meta charset="UTF-8">
@@ -23,7 +31,7 @@
             </div>
             <div class="holo-card">
                 <h3>Staff Management</h3>
-                <p><a href="staff_management.html" class="holo-btn">Go</a></p>
+                <p><a href="staff_management.php" class="holo-btn">Go</a></p>
             </div>
         </div>
 
@@ -31,10 +39,9 @@
     </div>
 
     <script>
-        < script >
-            function logout() {
-                window.location.href = '../backend/logout.php';
-            }
+        function logout() {
+            window.location.href = '../backend/logout.php';
+        }
 
         // Load live data
         function loadDashboard() {
@@ -43,7 +50,7 @@
                 .then(data => {
                     if (data.error) {
                         alert(data.error);
-                        window.location.href = 'index.html';
+                        window.location.href = 'index.php';
                     } else {
                         document.getElementById('total-staff').textContent = data.totalStaff;
                         document.getElementById('today-attendance').textContent = data.todayAttendance;
@@ -53,7 +60,6 @@
         }
 
         window.onload = loadDashboard;
-    </script>
     </script>
 </body>
 
