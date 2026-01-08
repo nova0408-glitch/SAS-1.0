@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+session_start();
+require_once '../config/csrf.php';
+$csrf_token = generateCsrfToken();
+?>
 
 <head>
     <meta charset="UTF-8">
@@ -13,6 +18,7 @@
         <h1>Staff Attendance System</h1>
         <div class="login-card">
             <form id="loginForm" method="POST" action="../backend/login.php">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
                 <input type="email" name="email" placeholder="Admin Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <button type="submit" class="holo-btn">Login</button>

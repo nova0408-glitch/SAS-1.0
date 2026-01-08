@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+session_start();
+require_once '../config/constants.php';
+if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_STAFF) {
+    header("Location: staff_login.php");
+    exit();
+}
+?>
 
 <head>
     <meta charset="UTF-8">
@@ -15,10 +23,10 @@
         <div class="dashboard-cards">
             <div class="holo-card">
                 <h3>Sign In / Sign Out</h3>
-                <button onclick="signIn()" class="holo-btn">Sign In</button><br>
+                <button onclick="signIn()" class="holo-btn" id="signInBtn">Sign In</button><br>
                 <br>
                 <br>
-                <button onclick="signOut()" class="holo-btn">Sign Out</button>
+                <button onclick="signOut()" class="holo-btn" id="signOutBtn">Sign Out</button>
             </div>
         </div>
     </div>
@@ -43,7 +51,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
-                        window.location.href = 'staff_login.html';
+                        window.location.href = 'staff_login.php';
                     } else {
                         document.getElementById('staffName').textContent = data.full_name;
                     }
@@ -53,21 +61,34 @@
 
         // Sign In / Sign Out functions
         function signIn() {
+            const btn = document.getElementById('signInBtn');
+            btn.disabled = true;
+            btn.textContent = 'Signing In...';
             fetch('../backend/record_attendance.php?action=sign_in')
                 .then(res => res.json())
                 .then(data => showPopup(data.message, data.status))
-                .catch(err => console.error(err));
+                .catch(err => console.error(err))
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.textContent = 'Sign In';
+                });
         }
 
         function signOut() {
+            const btn = document.getElementById('signOutBtn');
+            btn.disabled = true;
+            btn.textContent = 'Signing Out...';
             fetch('../backend/record_attendance.php?action=sign_out')
                 .then(res => res.json())
                 .then(data => showPopup(data.message, data.status))
-                .catch(err => console.error(err));
+                .catch(err => console.error(err))
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.textContent = 'Sign Out';
+                });
         }
         window.onload = loadUserInfo;
     </script>
 </body>
 
 </html>
-        }
