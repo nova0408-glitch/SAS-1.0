@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<?php
+session_start();
+require_once '../config/constants.php';
+if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
+    header("Location: index.html");
+    exit();
+}
+?>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Dashboard - SAS 1.0</title>
+        <link rel="stylesheet" href="style1.css">
+    </head>
+
+    <body>
+        <div class="dashboard-container">
+            <!-- Header Section -->
+            <h1>Welcome, Admin</h1>
+
+            <!-- Dashboard Summary Cards -->
+            <div class="dashboard-cards" style="display: flex; justify-content: space-between; gap: 20px;">
+                <div class="holo-card" style="flex: 1;">
+                    <h3>Total Staffs</h3>
+                    <p id="total-staff">Loading...</p>
+                </div>
+                <div class="holo-card" style="flex: 1;">
+                    <h3>Today's Attendance</h3>
+                    <p id="today-attendance">Loading...</p>
+                </div>
+                <div class="holo-card" style="flex: 1;">
+                    <h3>Staff Management</h3>
+                    <p><a href="staff_management.php" class="holo-btn">Go</a></p>
+                </div>
+            </div>
+
+            <!-- Date Selector Section -->
+            <div class="date" style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 30px 0; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
+                <label for="attendanceDate" style="font-size: 16px; font-weight: 500;">Select Date:</label>
+                <input type="date" id="attendanceDate" value="<?php echo date('Y-m-d'); ?>" style="padding: 10px 15px; border-radius: 8px; border: 2px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1); font-size: 15px; min-width: 180px;">
+            </div>
+
+            <!-- Attendance Records Section -->
+            <div class="attendance-table-container">
+                <h2>Attendance Records</h2>
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>Staff Name</th>
+                            <th>Email</th>
+                            <th>Sign In Time</th>
+                            <th>Sign Out Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Logout Button -->
+            <button onclick="logout()" class="holo-btn logout-btn">Logout</button>
+        </div>
+
+        <script>
+            // Logout function
+            function logout() {
+                window.location.href = '../backend/logout.php';
+            }
+
+            // Load dashboard summary data
+            function loadDashboard() {
+                fetch('../backend/get_dashboard_data.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                            window.location.href = 'index.php';
+                        } else {
+                            document.getElementById('total-staff').textContent = data.totalStaff;
+                            document.getElementById('today-attendance').textContent = data.todayAttendance;
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            // Load attendance table records
+            function loadAttendanceTable() {
+                const date = document.getElementById('attendanceDate').value;
+
+                fetch(`../backend/get_attendance_details.php?date=${date}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const tbody = document.getElementById('attendanceTableBody');
+
+                        if (data.error) {
+                            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">${data.error}</td></tr>`;
+                            return;
+                        }
+
+                        if (data.data.length === 0) {
+                            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">No staff records found.</td></tr>`;
+                            return;
+                        }
+
+                        let html = '';
+                        data.data.forEach(record => {
+                            const statusClass = record.status === 'Absent' ? 'status-absent' :
+                                record.status === 'Present' ? 'status-present' :
+                                'status-incomplete';
+
+                            html += `
+                            <tr>
+                                <td>${escapeHtml(record.full_name)}</td>
+                                <td>${escapeHtml(record.email)}</td>
+                                <td>${escapeHtml(record.sign_in_time)}</td>
+                                <td>${escapeHtml(record.sign_out_time)}</td>
+                                <td><span class="status-badge ${statusClass}">${escapeHtml(record.status)}</span></td>
+                            </tr>
+                        `;
+                        });
+
+                        tbody.innerHTML = html;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        document.getElementById('attendanceTableBody').innerHTML =
+                            `<tr><td colspan="5" style="text-align: center; color: red;">Error loading attendance data.</td></tr>`;
+                    });
+            }
+
+            // Escape HTML to prevent XSS
+            function escapeHtml(text) {
+                const map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, m => map[m]);
+            }
+
+            // Initialize on page load
+            window.onload = () => {
+                loadDashboard();
+                loadAttendanceTable();
+            };
+
+            // Reload attendance table when date changes
+            document.getElementById('attendanceDate').addEventListener('change', loadAttendanceTable);
+        </script>
+    </body>
+
+</html>

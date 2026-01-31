@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Holographic Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: radial-gradient(circle at center, #001122 0%, #000000 100%);
+      font-family: 'Roboto', sans-serif;
+      color: #00ffff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px; /* Enables 3D space */
+    }
+
+    /* Background holographic grid + scanlines */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background: 
+        linear-gradient(rgba(0, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.6;
+      animation: scan 12s linear infinite;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .holo-container {
+      position: relative;
+      width: 420px;
+      padding: 50px 40px;
+      background: rgba(0, 20, 40, 0.25);
+      border: 1px solid rgba(0, 255, 255, 0.4);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 
+        0 0 40px rgba(0, 255, 255, 0.3),
+        inset 0 0 30px rgba(0, 255, 255, 0.15);
+      transform-style: preserve-3d;
+      transform: rotateX(8deg) rotateY(5deg) translateZ(80px);
+      transition: transform 0.8s ease;
+    }
+
+    .holo-container:hover {
+      transform: rotateX(12deg) rotateY(8deg) translateZ(120px);
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.8rem;
+      text-align: center;
+      margin-bottom: 40px;
+      background: linear-gradient(90deg, #00ffff, #00bfff, #00ffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+      animation: glow-text 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow-text {
+      from { text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+      to   { text-shadow: 0 0 30px rgba(0, 255, 255, 0.9), 0 0 50px rgba(0, 255, 255, 0.6); }
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(0, 255, 255, 0.5);
+      border-radius: 10px;
+      color: #00ffff;
+      font-size: 1.1rem;
+      outline: none;
+      transition: all 0.4s;
+      box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.1);
+    }
+
+    input:focus {
+      border-color: #00ffff;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.6), inset 0 0 15px rgba(0, 255, 255, 0.3);
+      transform: translateZ(20px);
+    }
+
+    label {
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      background: rgba(0, 20, 40, 0.6);
+      padding: 0 10px;
+      font-size: 0.9rem;
+      color: #00ffff;
+      pointer-events: none;
+      transition: all 0.3s;
+    }
+
+    input:focus + label,
+    input:not(:placeholder-shown) + label {
+      top: -22px;
+      font-size: 0.8rem;
+      color: #00bfff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(90deg, #00ffff, #0099ff);
+      border: none;
+      border-radius: 10px;
+      color: #000;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+      transition: all 0.5s;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .btn:hover {
+      transform: translateY(-5px) translateZ(30px);
+      box-shadow: 0 0 60px rgba(0, 255, 255, 0.8);
+      background: linear-gradient(90deg, #00ffff, #00ccff);
+    }
+
+    .extras {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 0.95rem;
+    }
+
+    .extras a {
+      color: #00ccff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .extras a:hover {
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <div class="holo-container">
+    <h1>ADMIN ACCESS</h1>
+    <form>
+      <div class="form-group">
+        <input type="text" id="username" placeholder=" " required/>
+        <label for="username">Username / Email</label>
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" placeholder=" " required/>
+        <label for="password">Password</label>
+      </div>
+      <button type="submit" class="btn">Authorize</button>
+    </form>
+    <div class="extras">
+      <a href="#">Forgot Access Code?</a> | <a href="#">Secure Recovery</a>
+    </div>
+  </div>
+</body>
+</html>
