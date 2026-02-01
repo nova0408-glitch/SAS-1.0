@@ -35,7 +35,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_STAFF) {
             </div>
         </div>
 
-        <button onclick="window.location.href='../backend/logout.php'" class="holo-btn" style="margin-top: 30px;">
+        <button onclick="window.location.href='../frontend/staff_login.php'" class="holo-btn" style="margin-top: 30px;">
             Logout
         </button>
     </div>
@@ -211,4 +211,5 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_STAFF) {
         });
     </script>
 </body>
+
 </html>
