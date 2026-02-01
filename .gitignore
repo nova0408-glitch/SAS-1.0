@@ -1,0 +1,18 @@
+# Sensitive files
+.env
+config/db.php
+
+# Logs
+*.log
+
+# Vendor/dependencies
+vendor/
+
+# Test files
+test_db.php
+hash_generator.php
+
+# OS/IDE junk
+.DS_Store
+.idea/
+.vscode/
