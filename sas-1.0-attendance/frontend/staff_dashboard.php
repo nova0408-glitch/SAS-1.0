@@ -146,7 +146,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_STAFF) {
                         signInBtn.style.cursor = 'pointer';
                     } else {
                         signInBtn.disabled = true;
-                        signInBtn.textContent = 'Sign-in closed (07:00–11:00)';
+                        signInBtn.textContent = 'Sign-in closed (07:00–09:00)';
                         signInBtn.style.background = 'linear-gradient(45deg, #6c757d, #5a6268)';
                         signInBtn.style.cursor = 'not-allowed';
                     }
@@ -213,3 +213,4 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_STAFF) {
 </body>
 
 </html>
+
