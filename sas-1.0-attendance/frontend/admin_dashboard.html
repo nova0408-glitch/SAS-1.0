@@ -18,10 +18,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
 
     <body>
         <div class="dashboard-container">
-            <!-- Header Section -->
+            
             <h1>Welcome, Admin</h1>
 
-            <!-- Dashboard Summary Cards -->
+           
             <div class="dashboard-cards" style="display: flex; justify-content: space-between; gap: 20px;">
                 <div class="holo-card" style="flex: 1;">
                     <h3>Total Staffs</h3>
@@ -37,13 +37,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
                 </div>
             </div>
 
-            <!-- Date Selector Section -->
+            
             <div class="date" style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 30px 0; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
                 <label for="attendanceDate" style="font-size: 16px; font-weight: 500;">Select Date:</label>
                 <input type="date" id="attendanceDate" value="<?php echo date('Y-m-d'); ?>" style="padding: 10px 15px; border-radius: 8px; border: 2px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.1); font-size: 15px; min-width: 180px;">
             </div>
 
-            <!-- Attendance Records Section -->
             <div class="attendance-table-container">
                 <h2>Attendance Records</h2>
                 <table class="attendance-table">
@@ -64,17 +63,16 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
                 </table>
             </div>
 
-            <!-- Logout Button -->
+            
             <button onclick="logout()" class="holo-btn logout-btn">Logout</button>
         </div>
 
         <script>
-            // Logout function
+          
             function logout() {
                 window.location.href = '../backend/logout.php';
             }
 
-            // Load dashboard summary data
             function loadDashboard() {
                 fetch('../backend/get_dashboard_data.php')
                     .then(response => response.json())
@@ -90,7 +88,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
                     .catch(err => console.error(err));
             }
 
-            // Load attendance table records
             function loadAttendanceTable() {
                 const date = document.getElementById('attendanceDate').value;
 
@@ -135,7 +132,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
                     });
             }
 
-            // Escape HTML to prevent XSS
+            
             function escapeHtml(text) {
                 const map = {
                     '&': '&amp;',
@@ -147,13 +144,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
                 return text.replace(/[&<>"']/g, m => map[m]);
             }
 
-            // Initialize on page load
+            
             window.onload = () => {
                 loadDashboard();
                 loadAttendanceTable();
             };
 
-            // Reload attendance table when date changes
             document.getElementById('attendanceDate').addEventListener('change', loadAttendanceTable);
         </script>
     </body>
