@@ -18,7 +18,6 @@
 
 ## 📸 Screenshots
 
-*(Add screenshots here once available — e.g., admin dashboard, staff login, attendance report)*
 
 ## 🚀 Quick Start
 
