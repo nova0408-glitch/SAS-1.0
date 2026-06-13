@@ -138,7 +138,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_STAFF) {
             fetch('../backend/get_current_time_status.php')
                 .then(r => r.json())
                 .then(data => {
-                    // Sign-in window: 07:00 - 11:00
+                
                     if (data.can_sign_in) {
                         signInBtn.disabled = false;
                         signInBtn.textContent = 'Sign In';
@@ -150,8 +150,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_STAFF) {
                         signInBtn.style.background = 'linear-gradient(45deg, #6c757d, #5a6268)';
                         signInBtn.style.cursor = 'not-allowed';
                     }
-
-                    // Sign-out window: 15:00 - 18:00
                     if (data.can_sign_out) {
                         signOutBtn.disabled = false;
                         signOutBtn.textContent = 'Sign Out';
@@ -164,7 +162,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_STAFF) {
                         signOutBtn.style.cursor = 'not-allowed';
                     }
 
-                    // Status message logic
+               
                     if (!data.has_signed_in_today) {
                         statusMsg.textContent = "You have not signed in today → Marked as Absent";
                         statusMsg.style.color = '#ff4d4d';
@@ -203,7 +201,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_STAFF) {
                 .catch(() => console.error('Failed to load user info'));
         }
 
-        // Run on load + refresh every 60 seconds
         window.addEventListener('load', () => {
             loadUserInfo();
             updateButtonStatesAndStatus();
