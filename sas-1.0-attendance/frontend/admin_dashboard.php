@@ -15,84 +15,83 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
     <title>Admin Dashboard - SAS 1.0</title>
     <link rel="stylesheet" href="style1.css">
     <style>
-        /* Enhanced CSS for the attendance table */
         .attendance-table-container {
             margin: 20px 0;
-            overflow-x: auto; /* Makes table responsive on smaller screens */
+            overflow-x: auto; 
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-            background-color: #949292; /* White background for contrast */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            background-color: #949292;
         }
 
         .attendance-table {
             width: 100%;
             border-collapse: collapse;
             font-family: Arial, sans-serif;
-            /* Removed table-layout: fixed; to allow auto-sizing based on content */
+ 
         }
 
         .attendance-table th,
         .attendance-table td {
-            padding: 12px 15px; /* Improved padding for better readability */
-            text-align: left; /* Left-align text for natural reading */
-            border-bottom: 1px solid #ddd; /* Light borders for separation */
-            vertical-align: middle; /* Vertical alignment for content */
-            overflow-wrap: break-word; /* Break long words to prevent overlap */
-             /* Ensure long strings like emails break if needed */
+            padding: 12px 15px; 
+            text-align: left; 
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle; 
+            overflow-wrap: break-word; 
+            
         }
 
         .attendance-table th {
-            background-color: #f4f4f4; /* Light gray header background */
+            background-color: #f4f4f4; 
             font-weight: bold;
             text-transform: uppercase;
             font-size: 14px;
-            color: #000; /* Black color for header text */
-            position: sticky; /* Sticky headers for scrolling */
+            color: #000; 
+            position: sticky; 
             top: 0;
             z-index: 1;
         }
 
         .attendance-table td {
-            color: #000; /* Black color for table details */
+            color: #000; 
         }
 
         .attendance-table tbody tr:nth-child(even) {
-            background-color: #f9f9f9; /* Alternating row colors for better visibility */
+            background-color: #f9f9f9; 
         }
 
         .attendance-table tbody tr:hover {
-            background-color: #f1f1f1; /* Hover effect for interactivity */
+            background-color: #f1f1f1; 
             transition: background-color 0.3s ease;
         }
 
-        /* Status badge styling */
+        
         .status-badge {
             padding: 6px 12px;
-            border-radius: 20px; /* Pill-shaped badges */
+            border-radius: 20px; 
             font-size: 12px;
             font-weight: bold;
             text-transform: uppercase;
             display: inline-block;
-            min-width: 80px; /* Ensures consistent width */
+            min-width: 80px; 
             text-align: center;
         }
 
         .status-present {
-            background-color: #28a745; /* Green for present */
+            background-color: #28a745; 
             color: white;
         }
 
         .status-absent {
-            background-color: #dc3545; /* Red for absent */
+            background-color: #dc3545; 
             color: white;
         }
 
         .status-incomplete {
-            background-color: #ffc107; /* Yellow for incomplete */
+            background-color: #ffc107; 
             color: #333;
         }
 
-        /* Responsive adjustments */
+       
         @media (max-width: 768px) {
             .attendance-table th,
             .attendance-table td {
@@ -122,13 +121,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
             </div>
         </div>
 
-        <!-- Date Selector -->
+       
         <div class="date">
             <label for="attendanceDate">Select Date:</label>
             <input type="date" id="attendanceDate" value="<?php echo date('Y-m-d'); ?>">
         </div>
 
-        <!-- Attendance Table -->
+       
         <div class="attendance-table-container">
             <h2>Attendance Records</h2>
             <table class="attendance-table">
@@ -157,7 +156,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
             window.location.href = '../backend/logout.php';
         }
 
-        // Load summary data
+        
         function loadDashboard() {
             fetch('../backend/get_dashboard_data.php')
                 .then(response => response.json())
@@ -173,7 +172,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
                 .catch(err => console.error(err));
         }
 
-        // Load detailed attendance records
+        
         function loadAttendanceTable() {
             const date = document.getElementById('attendanceDate').value;
             
@@ -218,7 +217,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
                 });
         }
 
-        // Escape HTML to prevent XSS
+       
         function escapeHtml(text) {
             const map = {
                 '&': '&amp;',
@@ -230,13 +229,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != ROLE_ADMIN) {
             return text.replace(/[&<>"']/g, m => map[m]);
         }
 
-        // Load on page load
+       
         window.onload = () => {
             loadDashboard();
             loadAttendanceTable();
         };
 
-        // Reload attendance table when date changes
+       
         document.getElementById('attendanceDate').addEventListener('change', loadAttendanceTable);
     </script>
 </body>
