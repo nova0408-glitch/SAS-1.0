@@ -1,24 +1,36 @@
-# SAS-1.0
-An attendance tracking system for staffs in an organization (school, hospital... etc ) that tracks daily attendance of each staff and their punctuality for effective work output.
+# SAS-1.0 - Staff Attendance System
 
-## Features
-- Admin dashboard to view total staff and today's attendance.
-- Staff sign-in/out functionality.
-- Secure authentication with password hashing.
-- CSRF protection.
-- Staff management for admins.
+![PHP](https://img.shields.io/badge/PHP-777BB4?logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-## Setup
-1. Ensure PHP 7.4+, MySQL, and a web server (e.g., Apache) are installed.
-2. Clone the repo and navigate to `sas-1.0-attendance/`.
-3. Configure database in `.env` file.
-4. Import the database schema (create `users` and `attendance` tables).
-5. Access `frontend/index.php` for admin login or `frontend/staff_login.php` for staff.
+**SAS-1.0** is a simple yet secure web-based attendance tracking system designed for organizations such as schools, hospitals, offices, and other institutions. It tracks daily staff attendance, sign-in/out times, and punctuality to help improve workforce management and productivity.
 
-## Database Schema
-- `users`: user_id, email, full_name, password_hash, role_id, is_active
-- `attendance`: attendance_id, user_id, date, sign_in_time, sign_out_time
+## ✨ Features
 
-## Security
-- Uses prepared statements, CSRF tokens, and secure headers.
-- Passwords hashed with bcrypt.
+- **Admin Dashboard**: Overview of total staff, today's attendance, and quick reports.
+- **Staff Self-Service**: Easy sign-in and sign-out functionality.
+- **Secure Authentication**: Password hashing with bcrypt, role-based access (Admin/Staff).
+- **CSRF Protection**: Built-in security against common web attacks.
+- **Staff Management**: Admins can add, view, and manage staff accounts.
+- **Database-Driven**: MySQL backend with proper indexing and a stored procedure for daily reports.
+- **Responsive UI**: Clean frontend with CSS styling and JavaScript enhancements.
+
+## 📸 Screenshots
+
+*(Add screenshots here once available — e.g., admin dashboard, staff login, attendance report)*
+
+## 🚀 Quick Start
+
+### Prerequisites
+- PHP 7.4 or higher
+- MySQL / MariaDB
+- Web server (Apache recommended, XAMPP/LAMP/WAMP stack ideal for local development)
+- Composer (optional, for future dependencies)
+
+### Installation
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/nova0408-glitch/SAS-1.0.git
+   cd SAS-1.0/sas-1.0-attendance
