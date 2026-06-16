@@ -53,13 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Delete the staff member
+    $role = ROLE_STAFF;
     $stmt = $conn->prepare("DELETE FROM users WHERE user_id = ? AND role_id = ?");
     if (!$stmt) {
         echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $conn->error]);
         exit();
     }
     $stmt->bind_param("ii", $user_id, $role);
-    $role = ROLE_STAFF;
     
     if ($stmt->execute()) {
         echo json_encode(['status' => 'success', 'message' => 'Staff member deleted successfully.']);
