@@ -16,7 +16,8 @@ $today = date('Y-m-d');
 $now = new DateTime('now', new DateTimeZone('Africa/Dar_es_Salaam'));
 $current = $now->format('H:i:s');
 
-$can_sign_in  = ($current >= '07:00:00' && $current <= '09:00:00');
+// Sign-in allowed 07:00 - 11:00 (matching record_attendance.php)
+$can_sign_in  = ($current >= '07:00:00' && $current <= '11:00:00');
 $can_sign_out = ($current >= '15:00:00' && $current <= '18:00:00');
 
 $stmt = $conn->prepare("
@@ -40,5 +41,4 @@ echo json_encode([
 ]);
 
 $stmt->close();
-
-$conn->close();
+?>
