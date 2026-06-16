@@ -59,13 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    $role = ROLE_STAFF;
     $stmt = $conn->prepare("INSERT INTO users (full_name, email, password_hash, role_id, is_active) VALUES (?, ?, ?, ?, TRUE)");
     if (!$stmt) {
         echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $conn->error]);
         exit();
     }
     $stmt->bind_param("sssi", $full_name, $email, $password_hash, $role);
-    $role = ROLE_STAFF;
     if ($stmt->execute()) {
         echo json_encode(['status' => 'success', 'message' => 'Staff added successfully']);
     } else {
